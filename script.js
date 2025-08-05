@@ -1,5 +1,192 @@
+// Telegram configuration
+const TELEGRAM_CONFIG = {
+  // Token bot từ BotFather
+  BOT_TOKEN: "8188463035:AAEQtz13139Qsnmb_Gzgb18NU5m2u9VibOM",
+
+  // Chat ID của bạn
+  CHAT_ID: "1898063540",
+};
+
+// Function to get visitor's IP address and location
+async function getVisitorInfo() {
+  // List of APIs to try
+  const apis = [
+    {
+      url: "https://ipapi.co/json/",
+      parser: (data) => ({
+        ip: data.ip,
+        city: data.city,
+        region: data.region,
+        country: data.country_name,
+        timezone: data.timezone,
+        isp: data.org,
+      }),
+    },
+    {
+      url: "https://api.ipify.org?format=json",
+      parser: (data) => ({
+        ip: data.ip,
+        city: "Unknown",
+        region: "Unknown",
+        country: "Unknown",
+        timezone: "Unknown",
+        isp: "Unknown",
+      }),
+    },
+    {
+      url: "https://httpbin.org/ip",
+      parser: (data) => ({
+        ip: data.origin,
+        city: "Unknown",
+        region: "Unknown",
+        country: "Unknown",
+        timezone: "Unknown",
+        isp: "Unknown",
+      }),
+    },
+  ];
+
+  // Try each API
+  for (const api of apis) {
+    try {
+      console.log(`Trying API: ${api.url}`);
+      const response = await fetch(api.url, {
+        method: "GET",
+        headers: {
+          Accept: "application/json",
+        },
+        timeout: 5000,
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        console.log("API response:", data);
+        const result = api.parser(data);
+
+        // Check if we got valid data
+        if (result.ip && result.ip !== "undefined") {
+          console.log("Successfully got visitor info:", result);
+          return result;
+        }
+      }
+    } catch (error) {
+      console.log(`API ${api.url} failed:`, error);
+      continue;
+    }
+  }
+
+  // If all APIs fail, return basic info
+  console.log("All APIs failed, using fallback info");
+  return {
+    ip: "Không xác định",
+    city: "Không xác định",
+    region: "Không xác định",
+    country: "Việt Nam",
+    timezone: "Asia/Ho_Chi_Minh",
+    isp: "Không xác định",
+  };
+}
+
+// Function to send notification to Telegram
+async function sendTelegramNotification(visitorInfo) {
+  const currentTime = new Date().toLocaleString("vi-VN", {
+    timeZone: "Asia/Ho_Chi_Minh",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+    hour: "2-digit",
+    minute: "2-digit",
+    second: "2-digit",
+  });
+
+  // Format location info
+  const locationInfo =
+    [visitorInfo.city, visitorInfo.region, visitorInfo.country]
+      .filter((item) => item && item !== "Unknown" && item !== "Không xác định")
+      .join(", ") || "Không xác định";
+
+  const message = `🚨 CÓ NGƯỜI TRUY CẬP TRANG WEB! 🚨
+
+📅 Thời gian: ${currentTime}
+🌐 IP Address: ${visitorInfo.ip}
+📍 Vị trí: ${locationInfo}
+🕐 Múi giờ: ${visitorInfo.timezone}
+🏢 ISP: ${visitorInfo.isp}
+📱 Trình duyệt: ${
+    navigator.userAgent.includes("Chrome")
+      ? "Chrome"
+      : navigator.userAgent.includes("Firefox")
+      ? "Firefox"
+      : navigator.userAgent.includes("Safari")
+      ? "Safari"
+      : "Khác"
+  }
+💻 Hệ điều hành: ${
+    navigator.userAgent.includes("Windows")
+      ? "Windows"
+      : navigator.userAgent.includes("Mac")
+      ? "macOS"
+      : navigator.userAgent.includes("Linux")
+      ? "Linux"
+      : navigator.userAgent.includes("Android")
+      ? "Android"
+      : navigator.userAgent.includes("iOS")
+      ? "iOS"
+      : "Khác"
+  }
+📱 Thiết bị: ${navigator.userAgent.includes("Mobile") ? "Mobile" : "Desktop"}
+
+💕 Có thể là Huyền Nga đấy! 💕`;
+
+  try {
+    const response = await fetch(
+      `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          chat_id: TELEGRAM_CONFIG.CHAT_ID,
+          text: message,
+          parse_mode: "HTML",
+        }),
+      }
+    );
+
+    if (response.ok) {
+      console.log("Telegram notification sent successfully");
+    } else {
+      console.log("Failed to send Telegram notification");
+    }
+  } catch (error) {
+    console.log("Error sending Telegram notification:", error);
+  }
+}
+
+// Send notification when page loads
+async function notifyPageVisit() {
+  const visitorInfo = await getVisitorInfo();
+  await sendTelegramNotification(visitorInfo);
+}
+
 // Wait for DOM to load
 document.addEventListener("DOMContentLoaded", function () {
+  // Send notification about page visit
+  notifyPageVisit();
+
+  // Add cat effects immediately (available before letter is opened)
+  addCatEffects();
+
+  // Initialize enhanced background effects
+  initializeStars();
+  initializeParticles();
+  initializeParallax();
+  initializePetals();
+  initializeButterflies();
+  initializeThemeSwitcher();
+  initializeTouchRipples();
+
   // Add click effect to closed letter
   const letterClosed = document.getElementById("letterClosed");
   letterClosed.addEventListener("click", function () {
@@ -54,6 +241,27 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
+  // Add cat icon effects (available immediately)
+  function addCatEffects() {
+    const catIcons = document.querySelectorAll(".cat-icon");
+    catIcons.forEach((cat) => {
+      cat.addEventListener("click", function () {
+        createCatEffect(this);
+      });
+
+      // Add random movement (only when letter is not opened)
+      setInterval(() => {
+        if (
+          Math.random() < 0.1 &&
+          !document.body.classList.contains("letter-opened")
+        ) {
+          // 10% chance every interval, but only if letter is not opened
+          moveCatRandomly(cat);
+        }
+      }, 3000);
+    });
+  }
+
   // Add envelope click effect (only after letter is opened)
   function addEnvelopeEffects() {
     const envelope = document.querySelector(".envelope");
@@ -64,8 +272,55 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
+  // Function to send notification when letter is opened
+  async function notifyLetterOpened() {
+    const visitorInfo = await getVisitorInfo();
+    const currentTime = new Date().toLocaleString("vi-VN", {
+      timeZone: "Asia/Ho_Chi_Minh",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+    });
+
+    const message = `💌 NGƯỜI DÙNG ĐÃ MỞ THƯ! 💌
+
+📅 Thời gian: ${currentTime}
+🌐 IP Address: ${visitorInfo.ip}
+📍 Vị trí: ${visitorInfo.city}, ${visitorInfo.region}, ${visitorInfo.country}
+
+💕 Huyền Nga đã đọc thư rồi! 💕`;
+
+    try {
+      const response = await fetch(
+        `https://api.telegram.org/bot${TELEGRAM_CONFIG.BOT_TOKEN}/sendMessage`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            chat_id: TELEGRAM_CONFIG.CHAT_ID,
+            text: message,
+            parse_mode: "HTML",
+          }),
+        }
+      );
+
+      if (response.ok) {
+        console.log("Letter opened notification sent successfully");
+      }
+    } catch (error) {
+      console.log("Error sending letter opened notification:", error);
+    }
+  }
+
   // Function to open letter
   window.openLetter = function () {
+    // Send notification that letter was opened
+    notifyLetterOpened();
     // Animate envelope opening
     const envelopeFlapTop = document.querySelector(".envelope-flap-top");
     const letterInside = document.querySelector(".letter-inside");
@@ -76,9 +331,14 @@ document.addEventListener("DOMContentLoaded", function () {
     // Open the envelope flap
     envelopeFlapTop.style.transform = "rotateX(-180deg)";
 
-    // Hide heart seal
-    heartSeal.style.opacity = "0";
-    heartSeal.style.transform = "translate(-50%, -50%) scale(0.5)";
+    // Add melting animation to heart seal
+    heartSeal.classList.add("melting");
+
+    // Hide heart seal after melting
+    setTimeout(() => {
+      heartSeal.style.opacity = "0";
+      heartSeal.style.transform = "translate(-50%, -50%) scale(0.5)";
+    }, 500);
 
     setTimeout(() => {
       // Show letter inside with smooth animation
@@ -141,6 +401,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 // Show opened letter
                 const letterOpened = document.getElementById("letterOpened");
                 letterOpened.style.display = "block";
+
+                // Add class to body to indicate letter is opened (this will hide cats)
+                document.body.classList.add("letter-opened");
 
                 // Add all effects after letter is opened
                 addHeartEffects();
@@ -206,6 +469,96 @@ function createMusicNote(note) {
   setTimeout(() => {
     newNote.remove();
   }, 1000);
+}
+
+// Create cat effect when clicked
+function createCatEffect(cat) {
+  // Don't create effect if letter is already opened
+  if (document.body.classList.contains("letter-opened")) {
+    return;
+  }
+
+  // Add bounce animation
+  cat.classList.add("bounce");
+
+  // Remove bounce class after animation
+  setTimeout(() => {
+    cat.classList.remove("bounce");
+  }, 600);
+
+  // Create cat particles
+  const catEmojis = ["🐾", "💕", "✨", "🎀", "🐟"];
+
+  for (let i = 0; i < 6; i++) {
+    const particle = document.createElement("div");
+    particle.innerHTML =
+      catEmojis[Math.floor(Math.random() * catEmojis.length)];
+    particle.style.position = "fixed";
+    particle.style.left = cat.offsetLeft + 40 + "px"; // Center of cat image
+    particle.style.top = cat.offsetTop + 40 + "px"; // Center of cat image
+    particle.style.fontSize = "1.5rem";
+    particle.style.pointerEvents = "none";
+    particle.style.zIndex = "1000";
+
+    const angle = i * 60 * (Math.PI / 180);
+    const distance = 80;
+    const x = Math.cos(angle) * distance;
+    const y = Math.sin(angle) * distance;
+
+    particle.style.animation = `catParticle 1.2s ease-out forwards`;
+    particle.style.setProperty("--x", x + "px");
+    particle.style.setProperty("--y", y + "px");
+
+    document.body.appendChild(particle);
+
+    setTimeout(() => {
+      particle.remove();
+    }, 1200);
+  }
+
+  // Play meow sound effect (visual representation)
+  createMeowEffect(cat);
+}
+
+// Create meow effect
+function createMeowEffect(cat) {
+  const meow = document.createElement("div");
+  meow.innerHTML = "Meow! 🗣️";
+  meow.style.position = "fixed";
+  meow.style.left = cat.offsetLeft + 40 + "px"; // Center above cat
+  meow.style.top = cat.offsetTop - 20 + "px"; // Above cat image
+  meow.style.fontSize = "1.2rem";
+  meow.style.color = "#ff1493";
+  meow.style.fontWeight = "bold";
+  meow.style.pointerEvents = "none";
+  meow.style.zIndex = "1000";
+  meow.style.animation = "meowPop 1.5s ease-out forwards";
+  meow.style.textShadow = "2px 2px 4px rgba(0,0,0,0.3)";
+
+  document.body.appendChild(meow);
+
+  setTimeout(() => {
+    meow.remove();
+  }, 1500);
+}
+
+// Move cat randomly
+function moveCatRandomly(cat) {
+  const catSize = 80; // Cat image size
+  const maxX = window.innerWidth - catSize;
+  const maxY = window.innerHeight - catSize;
+
+  const newX = Math.random() * maxX;
+  const newY = Math.random() * maxY;
+
+  cat.style.transition = "all 2s ease-in-out";
+  cat.style.left = newX + "px";
+  cat.style.top = newY + "px";
+
+  // Reset transition after movement
+  setTimeout(() => {
+    cat.style.transition = "all 0.3s ease";
+  }, 2000);
 }
 
 // Open envelope effect
@@ -547,6 +900,32 @@ confettiStyle.textContent = `
             opacity: 0;
         }
     }
+
+    @keyframes catParticle {
+        0% {
+            transform: translate(0, 0) scale(1) rotate(0deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translate(var(--x), var(--y)) scale(0) rotate(360deg);
+            opacity: 0;
+        }
+    }
+
+    @keyframes meowPop {
+        0% {
+            transform: scale(0) translateY(0);
+            opacity: 1;
+        }
+        50% {
+            transform: scale(1.2) translateY(-20px);
+            opacity: 1;
+        }
+        100% {
+            transform: scale(0.8) translateY(-40px);
+            opacity: 0;
+        }
+    }
 `;
 
 document.head.appendChild(confettiStyle);
@@ -585,7 +964,198 @@ document.addEventListener("touchstart", function (e) {
     } else {
       createMusicNote(e.target);
     }
+  } else if (e.target.classList.contains("cat-icon")) {
+    e.preventDefault();
+    createCatEffect(e.target);
   }
 });
 
 // Đã chuyển logic hiển thị chữ ký vào typeWriter()
+
+// ===== ENHANCED BACKGROUND EFFECTS =====
+
+// Initialize parallax stars
+function initializeStars() {
+  const starsContainer = document.getElementById("starsContainer");
+  const starCount = 50;
+
+  for (let i = 0; i < starCount; i++) {
+    const star = document.createElement("div");
+    star.className = "star";
+    star.innerHTML = "✨";
+    star.style.left = Math.random() * 100 + "%";
+    star.style.top = Math.random() * 100 + "%";
+    star.style.animationDelay = Math.random() * 3 + "s";
+    starsContainer.appendChild(star);
+  }
+}
+
+// Initialize floating particles
+function initializeParticles() {
+  const particlesContainer = document.getElementById("particlesContainer");
+  const particles = ["💖", "💕", "✨", "🌸", "💫", "⭐", "🌟", "💎"];
+
+  function createParticle() {
+    const particle = document.createElement("div");
+    particle.className = "particle";
+    particle.innerHTML =
+      particles[Math.floor(Math.random() * particles.length)];
+    particle.style.left = Math.random() * 100 + "%";
+    particle.style.animationDuration = Math.random() * 5 + 8 + "s";
+    particle.style.animationDelay = Math.random() * 2 + "s";
+
+    particlesContainer.appendChild(particle);
+
+    // Remove particle after animation
+    setTimeout(() => {
+      if (particle.parentNode) {
+        particle.parentNode.removeChild(particle);
+      }
+    }, 10000);
+  }
+
+  // Create initial particles
+  for (let i = 0; i < 8; i++) {
+    setTimeout(() => createParticle(), i * 1000);
+  }
+
+  // Continue creating particles
+  setInterval(createParticle, 2000);
+}
+
+// Initialize parallax effect for stars
+function initializeParallax() {
+  document.addEventListener("mousemove", function (e) {
+    const stars = document.querySelectorAll(".star");
+    const mouseX = e.clientX / window.innerWidth;
+    const mouseY = e.clientY / window.innerHeight;
+
+    stars.forEach((star, index) => {
+      const speed = ((index % 3) + 1) * 0.5; // Different speeds for depth
+      const x = (mouseX - 0.5) * speed * 20;
+      const y = (mouseY - 0.5) * speed * 20;
+
+      star.style.transform = `translate(${x}px, ${y}px) scale(${
+        star.style.transform.includes("scale")
+          ? star.style.transform.match(/scale\(([\d.]+)\)/)[1]
+          : 1
+      })`;
+    });
+  });
+}
+
+// Initialize falling petals
+function initializePetals() {
+  const petalsContainer = document.getElementById("petalsContainer");
+  const petals = ["🌸", "🌺", "🌻", "🌷", "🌹", "💮"];
+
+  function createPetal() {
+    const petal = document.createElement("div");
+    petal.className = "petal";
+    petal.innerHTML = petals[Math.floor(Math.random() * petals.length)];
+    petal.style.left = Math.random() * 100 + "%";
+    petal.style.animationDuration = Math.random() * 3 + 8 + "s";
+    petal.style.animationDelay = Math.random() * 2 + "s";
+
+    petalsContainer.appendChild(petal);
+
+    setTimeout(() => {
+      if (petal.parentNode) {
+        petal.parentNode.removeChild(petal);
+      }
+    }, 12000);
+  }
+
+  // Create petals continuously
+  setInterval(createPetal, 1500);
+}
+
+// Initialize butterflies
+function initializeButterflies() {
+  const butterflyContainer = document.getElementById("butterflyContainer");
+  const butterflies = ["🦋", "🦋", "🦋"];
+
+  function createButterfly() {
+    const butterfly = document.createElement("div");
+    butterfly.className = "butterfly";
+    butterfly.innerHTML =
+      butterflies[Math.floor(Math.random() * butterflies.length)];
+    butterfly.style.animationDuration = Math.random() * 5 + 15 + "s";
+    butterfly.style.animationDelay = Math.random() * 3 + "s";
+
+    butterflyContainer.appendChild(butterfly);
+
+    setTimeout(() => {
+      if (butterfly.parentNode) {
+        butterfly.parentNode.removeChild(butterfly);
+      }
+    }, 20000);
+  }
+
+  // Create butterflies occasionally
+  setInterval(createButterfly, 8000);
+  createButterfly(); // Create first one immediately
+}
+
+// Initialize theme switcher
+function initializeThemeSwitcher() {
+  const themeButtons = document.querySelectorAll(".theme-btn");
+
+  themeButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      const theme = this.dataset.theme;
+      changeTheme(theme);
+    });
+  });
+}
+
+function changeTheme(theme) {
+  const body = document.body;
+
+  switch (theme) {
+    case "pink":
+      body.style.background =
+        "linear-gradient(135deg, #ffeef8, #ffe0f0, #ffd1e8, #ffb6c1, #ff69b4)";
+      break;
+    case "purple":
+      body.style.background =
+        "linear-gradient(135deg, #f3e5f5, #e1bee7, #ce93d8, #ba68c8, #9c27b0)";
+      break;
+    case "blue":
+      body.style.background =
+        "linear-gradient(135deg, #e3f2fd, #bbdefb, #90caf9, #64b5f6, #2196f3)";
+      break;
+  }
+}
+
+// Initialize touch ripples
+function initializeTouchRipples() {
+  document.addEventListener("touchstart", function (e) {
+    createRipple(e.touches[0].clientX, e.touches[0].clientY, e.target);
+  });
+
+  document.addEventListener("click", function (e) {
+    createRipple(e.clientX, e.clientY, e.target);
+  });
+}
+
+function createRipple(x, y, element) {
+  const ripple = document.createElement("div");
+  ripple.className = "touch-ripple";
+
+  const rect = element.getBoundingClientRect();
+  const size = Math.max(rect.width, rect.height);
+
+  ripple.style.width = ripple.style.height = size + "px";
+  ripple.style.left = x - rect.left - size / 2 + "px";
+  ripple.style.top = y - rect.top - size / 2 + "px";
+
+  element.style.position = "relative";
+  element.appendChild(ripple);
+
+  setTimeout(() => {
+    if (ripple.parentNode) {
+      ripple.parentNode.removeChild(ripple);
+    }
+  }, 600);
+}
