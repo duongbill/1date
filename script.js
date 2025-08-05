@@ -1,3 +1,68 @@
+// Translations object
+const translations = {
+  vi: {
+    title: "💕 Thư Mời First Date 💕",
+    greeting: "Gửi Em,",
+    intro: 'Chào <span class="special-name">Huyền Nga</span> ✨',
+    "main-content":
+      "Cảm ơn em vì đã đồng ý cho anh làm quen với em nha heheh, anh với em nói chuyện với nhau cũng được một thời gian rùi á. Vì thế, anh viết những dòng này với mong muốn chúng ta có thể gặp nhau ngoài đời – một buổi hẹn nhỏ thui, để mình có cơ hội trò chuyện nhiều hơn, chia sẻ những điều thú vị và cùng tạo nên một kỷ niệm đáng nhớ cho cả hai.",
+    "location-info":
+      "Anh sắp phải rời khỏi Lào Cai rùi, nên buổi hẹn đầu tiên của anh và em chắc sẽ là ở dưới Hà Nội",
+    "hope-message":
+      "Anh hy vọng buổi hẹn này sẽ là khoảng thời gian thật thoải mái giữa hai ta, để mình có thể lắng nghe, chia sẻ và hiểu nhau hơn. Biết đâu, buổi đi chơi này lại là khởi đầu cho một điều gì đó… thật đẹp giữa hai đứa mình, đúng hong?",
+    "choice-message":
+      "Anh vẫn muốn để em chọn nơi mà em muốn đi khi em xuống Hà Nội, em hong cần điền vội đâu, khi nào gần xuống Hà Nội rùi em vô lại đây, em bấm vô đó và chọn nơi em muốn đi nha, anh sẽ đến đón và đưa em đi.",
+    "pate-message":
+      "À, pate cho Cam anh mua vị gà với cá tuyết, đúng yêu cầu của Cam nha. Anh chúc Cam ăn ngon miệng nhaaa.",
+    "closing-message":
+      "Anh chúc Huyền Nga đỗ NV1 nha, hẹn gặp em ở Hà Nội nhé 💕",
+    signature: "Cảm ơn em đã đọc,",
+    "button-text": "Chọn Nơi Đi Date Ở Đây Nè Em",
+    "button-tooltip":
+      "Khám phá những địa điểm tuyệt vời cho buổi hẹn đầu tiên! 🌸",
+    "button-tooltip-title": "Click để khám phá những địa điểm lãng mạn! 🌟",
+  },
+  en: {
+    title: "💕 First Date Invitation 💕",
+    greeting: "Dear You,",
+    intro: 'Hello <span class="special-name">Huyền Nga</span> ✨',
+    "main-content":
+      "Thank you for agreeing to get to know me hehe, we've been talking for a while now. So, I'm writing these lines hoping we can meet in person – just a small date, so we can have the opportunity to talk more, share interesting things and create a memorable moment for both of us.",
+    "location-info":
+      "I'm about to leave Lào Cai soon, so our first date will probably be in Hanoi",
+    "hope-message":
+      "I hope this date will be a really comfortable time between us, so we can listen, share and understand each other better. Who knows, this outing might be the beginning of something... really beautiful between us, right?",
+    "choice-message":
+      "I still want to let you choose where you want to go when you come to Hanoi, you don't need to fill it out in a hurry, when you're about to come to Hanoi, come back here, click on it and choose where you want to go, I'll come pick you up and take you there.",
+    "pate-message":
+      "Oh, I bought chicken and snow fish flavored pate for Cam, exactly as Cam requested. I wish Cam a delicious meal!",
+    "closing-message": "I wish Huyền Nga success in NV1, see you in Hanoi 💕",
+    signature: "Thank you for reading,",
+    "button-text": "Choose Date Location Here",
+    "button-tooltip": "Explore wonderful places for our first date! 🌸",
+    "button-tooltip-title": "Click to explore romantic locations! 🌟",
+  },
+  zh: {
+    title: "💕 初次约会邀请函 💕",
+    greeting: "亲爱的你，",
+    intro: '你好 <span class="special-name">Huyền Nga</span> ✨',
+    "main-content":
+      "谢谢你同意和我认识呢嘿嘿，我们聊天也有一段时间了。所以，我写下这些话，希望我们能在现实中见面——只是一个小约会，这样我们就有机会多聊聊，分享有趣的事情，为我们两个创造一个难忘的回忆。",
+    "location-info": "我很快就要离开老街了，所以我们的第一次约会可能会在河内",
+    "hope-message":
+      "我希望这次约会对我们来说是一段真正舒适的时光，这样我们就能倾听、分享并更好地了解彼此。谁知道呢，这次出游可能是我们之间某种...真正美好事物的开始，对吧？",
+    "choice-message":
+      "我仍然想让你选择当你来河内时想去的地方，你不需要急着填写，当你快要来河内时，回到这里，点击它并选择你想去的地方，我会来接你并带你去那里。",
+    "pate-message":
+      "哦，我给Cam买了鸡肉和雪鱼味的肉酱，完全按照Cam的要求。祝Cam用餐愉快！",
+    "closing-message": "祝Huyền Nga在NV1中成功，河内见 💕",
+    signature: "谢谢你的阅读，",
+    "button-text": "在这里选择约会地点",
+    "button-tooltip": "探索我们第一次约会的美妙地点！🌸",
+    "button-tooltip-title": "点击探索浪漫地点！🌟",
+  },
+};
+
 // Telegram configuration
 const TELEGRAM_CONFIG = {
   // Token bot từ BotFather
@@ -1159,3 +1224,53 @@ function createRipple(x, y, element) {
     }
   }, 600);
 }
+
+// Language switching functionality
+let currentLanguage = "vi"; // Default language
+
+function changeLanguage(lang) {
+  currentLanguage = lang;
+  localStorage.setItem("selectedLanguage", lang);
+
+  // Update all elements with data-translate attribute
+  const elementsToTranslate = document.querySelectorAll("[data-translate]");
+  elementsToTranslate.forEach((element) => {
+    const key = element.getAttribute("data-translate");
+    if (translations[lang] && translations[lang][key]) {
+      element.innerHTML = translations[lang][key];
+    }
+  });
+
+  // Update button tooltip title
+  const buttonWrapper = document.querySelector("[data-translate-title]");
+  if (buttonWrapper && translations[lang]["button-tooltip-title"]) {
+    buttonWrapper.setAttribute(
+      "title",
+      translations[lang]["button-tooltip-title"]
+    );
+  }
+
+  // Update HTML lang attribute
+  document.documentElement.lang = lang;
+}
+
+function initializeLanguage() {
+  // Get saved language or default to Vietnamese
+  const savedLanguage = localStorage.getItem("selectedLanguage") || "vi";
+  const languageSelect = document.getElementById("languageSelect");
+
+  if (languageSelect) {
+    languageSelect.value = savedLanguage;
+    changeLanguage(savedLanguage);
+
+    // Add event listener for language change
+    languageSelect.addEventListener("change", function () {
+      changeLanguage(this.value);
+    });
+  }
+}
+
+// Initialize language when DOM is loaded
+document.addEventListener("DOMContentLoaded", function () {
+  initializeLanguage();
+});

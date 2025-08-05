@@ -23,6 +23,15 @@
             <div class="theme-btn theme-blue" data-theme="blue"></div>
         </div>
 
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <select id="languageSelect" class="language-select">
+                <option value="vi">🇻🇳 Tiếng Việt</option>
+                <option value="en">🇺🇸 English</option>
+                <option value="zh">🇨🇳 中文</option>
+            </select>
+        </div>
+
         <div class="heart-bg"></div>
         
         <div class="letter-container">
@@ -63,37 +72,37 @@
                 
                 <div class="letter">
     <div class="letter-content">
-        <h1 class="title">💕 Thư Mời First Date 💕</h1>
+        <h1 class="title" data-translate="title">💕 Thư Mời First Date 💕</h1>
 
         <div class="message">
-            <p class="greeting">Gửi Em,</p>
+            <p class="greeting" data-translate="greeting">Gửi Em,</p>
 
     <div class="content-text" id="letterText">
-        <p>Chào <span class="special-name">Huyền Nga</span> ✨
-        <p>Cảm ơn em vì đã đồng ý cho anh làm quen với em nha heheh, anh với em nói chuyện với nhau cũng được một thời gian rùi á. Vì thế, anh viết những dòng này với mong muốn chúng ta có thể gặp nhau ngoài đời – một buổi hẹn nhỏ thui, để mình có cơ hội trò chuyện nhiều hơn, chia sẻ những điều thú vị và cùng tạo nên một kỷ niệm đáng nhớ cho cả hai.</p>
- <p>Anh sắp phải rời khỏi Lào Cai rùi, nên buổi hẹn đầu tiên của anh và em chắc sẽ là ở dưới Hà Nội</p> 
-       <p>Anh hy vọng buổi hẹn này sẽ là khoảng thời gian thật thoải mái giữa hai ta, để mình có thể lắng nghe, chia sẻ và hiểu nhau hơn. Biết đâu, buổi đi chơi này lại là khởi đầu cho một điều gì đó… thật đẹp giữa hai đứa mình, đúng hong?</p>
-<p> Anh vẫn muốn để em chọn nơi mà em muốn đi khi em xuống Hà Nội, em hong cần điền vội đâu, khi nào gần xuống Hà Nội rùi em vô lại đây, em bấm vô đó và chọn nơi em muốn đi nha, anh sẽ đến đón và đưa em đi. 
- <p>À, pate cho Cam anh mua vị gà với cá tuyết, đúng yêu cầu của Cam nha. Anh chúc Cam ăn ngon miệng nhaaa.</p> 
-<p>Anh chúc Huyền Nga đỗ NV1 nha, hẹn gặp em ở Hà Nội nhé 💕</p>
+        <p data-translate="intro">Chào <span class="special-name">Huyền Nga</span> ✨</p>
+        <p data-translate="main-content">Cảm ơn em vì đã đồng ý cho anh làm quen với em nha heheh, anh với em nói chuyện với nhau cũng được một thời gian rùi á. Vì thế, anh viết những dòng này với mong muốn chúng ta có thể gặp nhau ngoài đời – một buổi hẹn nhỏ thui, để mình có cơ hội trò chuyện nhiều hơn, chia sẻ những điều thú vị và cùng tạo nên một kỷ niệm đáng nhớ cho cả hai.</p>
+        <p data-translate="location-info">Anh sắp phải rời khỏi Lào Cai rùi, nên buổi hẹn đầu tiên của anh và em chắc sẽ là ở dưới Hà Nội</p>
+        <p data-translate="hope-message">Anh hy vọng buổi hẹn này sẽ là khoảng thời gian thật thoải mái giữa hai ta, để mình có thể lắng nghe, chia sẻ và hiểu nhau hơn. Biết đâu, buổi đi chơi này lại là khởi đầu cho một điều gì đó… thật đẹp giữa hai đứa mình, đúng hong?</p>
+        <p data-translate="choice-message">Anh vẫn muốn để em chọn nơi mà em muốn đi khi em xuống Hà Nội, em hong cần điền vội đâu, khi nào gần xuống Hà Nội rùi em vô lại đây, em bấm vô đó và chọn nơi em muốn đi nha, anh sẽ đến đón và đưa em đi.</p>
+        <p data-translate="pate-message">À, pate cho Cam anh mua vị gà với cá tuyết, đúng yêu cầu của Cam nha. Anh chúc Cam ăn ngon miệng nhaaa.</p>
+        <p data-translate="closing-message">Anh chúc Huyền Nga đỗ NV1 nha, hẹn gặp em ở Hà Nội nhé 💕</p>
 
 </div>
 
 
 
             <p class="signature" id="signature">
-                Cảm ơn em đã đọc,<br>
+                <span data-translate="signature">Cảm ơn em đã đọc,</span><br>
                 <span class="name">DuongNee</span>
             </p>
 
             <div class="date-button-container">
-                <div class="button-wrapper" title="Click để khám phá những địa điểm lãng mạn! 🌟">
+                <div class="button-wrapper" data-translate-title="button-tooltip-title">
                     <button class="date-button" onclick="window.open('https://duongbill.github.io/dating/?fbclid=PAZXh0bgNhZW0CMTEAAaeS8RN5cbIIbhwLIApG8sycE5WlycUodQky2TIb0z4eDsCmF5D_CnW1xs1pwA_aem_4kwT5NCgPnyA6P4K25XMVw', '_blank')">
                         <span class="button-icon">📍</span>
-                        <span class="button-text">Chọn Nơi Đi Date Ở Đây Nè Em</span>
+                        <span class="button-text" data-translate="button-text">Chọn Nơi Đi Date Ở Đây Nè Em</span>
                         <span class="button-sparkle">✨</span>
                     </button>
-                    <div class="button-tooltip">
+                    <div class="button-tooltip" data-translate="button-tooltip">
                         Khám phá những địa điểm tuyệt vời cho buổi hẹn đầu tiên! 🌸
                     </div>
                 </div>
