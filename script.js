@@ -5,7 +5,7 @@ const translations = {
     greeting: "Gửi Em,",
     intro: 'Chào <span class="special-name">Huyền Nga</span> ✨',
     "main-content":
-      "Cảm ơn em vì đã đồng ý cho anh làm quen với em nha heheh, anh với em nói chuyện với nhau cũng được một thời gian rùi á. Vì thế, anh viết những dòng này với mong muốn chúng ta có thể gặp nhau ngoài đời – một buổi hẹn nhỏ thui, để mình có cơ hội trò chuyện nhiều hơn, chia sẻ những điều thú vị và cùng tạo nên một kỷ niệm đáng nhớ cho cả hai.",
+      "Cảm ơn em đã quét QR nha heheh. Anh viết những dòng này với mong muốn chúng ta có một buổi hẹn ở bên ngoài, để mình có cơ hội trò chuyện nhiều hơn, chia sẻ những điều thú vị và cùng tạo nên một kỷ niệm đáng nhớ cho cả hai.",
     "location-info":
       "Anh sắp phải rời khỏi Lào Cai rùi, nên buổi hẹn đầu tiên của anh và em chắc sẽ là ở dưới Hà Nội",
     "hope-message":
@@ -27,7 +27,7 @@ const translations = {
     greeting: "Dear You,",
     intro: 'Hello <span class="special-name">Huyền Nga</span> ✨',
     "main-content":
-      "Thank you for agreeing to get to know me hehe, we've been talking for a while now. So, I'm writing these lines hoping we can meet in person – just a small date, so we can have the opportunity to talk more, share interesting things and create a memorable moment for both of us.",
+      "Thank you for scanning the QR code hehe. I'm writing these lines hoping we can have a date outside, so we can have the opportunity to talk more, share interesting things and create a memorable moment for both of us.",
     "location-info":
       "I'm about to leave Lào Cai soon, so our first date will probably be in Hanoi",
     "hope-message":
@@ -47,7 +47,7 @@ const translations = {
     greeting: "亲爱的你，",
     intro: '你好 <span class="special-name">Huyền Nga</span> ✨',
     "main-content":
-      "谢谢你同意和我认识呢嘿嘿，我们聊天也有一段时间了。所以，我写下这些话，希望我们能在现实中见面——只是一个小约会，这样我们就有机会多聊聊，分享有趣的事情，为我们两个创造一个难忘的回忆。",
+      "谢谢你扫描二维码呢嘿嘿。我写下这些话，希望我们能在外面约会，这样我们就有机会多聊聊，分享有趣的事情，为我们两个创造一个难忘的回忆。",
     "location-info": "我很快就要离开老街了，所以我们的第一次约会可能会在河内",
     "hope-message":
       "我希望这次约会对我们来说是一段真正舒适的时光，这样我们就能倾听、分享并更好地了解彼此。谁知道呢，这次出游可能是我们之间某种...真正美好事物的开始，对吧？",
@@ -538,7 +538,35 @@ function createMusicNote(note) {
 
 // Create cat effect when clicked
 function createCatEffect(cat) {
-  // Don't create effect if letter is already opened
+  // Special effects for new cats and icons (cat5, cat6, cat7, dav-icon, ftu-icon) - always work
+  if (
+    cat.classList.contains("cat5") ||
+    cat.classList.contains("cat6") ||
+    cat.classList.contains("cat7") ||
+    cat.classList.contains("dav-icon") ||
+    cat.classList.contains("ftu-icon")
+  ) {
+    // Add bounce animation
+    cat.classList.add("bounce");
+
+    // Create special effects based on icon type
+    if (cat.classList.contains("dav-icon")) {
+      createDAVEffect(cat);
+    } else if (cat.classList.contains("ftu-icon")) {
+      createFTUEffect(cat);
+    } else {
+      createSpecialHeartExplosion(cat);
+    }
+
+    // Remove bounce class after animation
+    setTimeout(() => {
+      cat.classList.remove("bounce");
+    }, 600);
+
+    return;
+  }
+
+  // Original logic for old cats - don't create effect if letter is already opened
   if (document.body.classList.contains("letter-opened")) {
     return;
   }
@@ -583,6 +611,154 @@ function createCatEffect(cat) {
 
   // Play meow sound effect (visual representation)
   createMeowEffect(cat);
+}
+
+// Special heart explosion for new cats
+function createSpecialHeartExplosion(cat) {
+  const rect = cat.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const specialEmojis = ["💖", "💕", "💗", "💓", "💝", "🌸", "✨", "🎀"];
+
+  for (let i = 0; i < 12; i++) {
+    const emoji = document.createElement("div");
+    emoji.textContent =
+      specialEmojis[Math.floor(Math.random() * specialEmojis.length)];
+    emoji.style.position = "fixed";
+    emoji.style.left = centerX + "px";
+    emoji.style.top = centerY + "px";
+    emoji.style.fontSize = "24px";
+    emoji.style.pointerEvents = "none";
+    emoji.style.zIndex = "9999";
+    emoji.style.userSelect = "none";
+
+    document.body.appendChild(emoji);
+
+    const angle = (i / 12) * 2 * Math.PI;
+    const distance = 100 + Math.random() * 50;
+    const endX = centerX + Math.cos(angle) * distance;
+    const endY = centerY + Math.sin(angle) * distance;
+
+    emoji.animate(
+      [
+        {
+          transform: "translate(0, 0) scale(0) rotate(0deg)",
+          opacity: 1,
+        },
+        {
+          transform: `translate(${endX - centerX}px, ${
+            endY - centerY
+          }px) scale(1.5) rotate(360deg)`,
+          opacity: 0,
+        },
+      ],
+      {
+        duration: 1500,
+        easing: "cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+      }
+    ).onfinish = () => {
+      emoji.remove();
+    };
+  }
+}
+
+// Special DAV effect
+function createDAVEffect(icon) {
+  const rect = icon.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const davEmojis = ["🎓", "📚", "✏️", "🏫", "🌟", "💡", "🎯", "🏆"];
+
+  for (let i = 0; i < 10; i++) {
+    const emoji = document.createElement("div");
+    emoji.textContent = davEmojis[Math.floor(Math.random() * davEmojis.length)];
+    emoji.style.position = "fixed";
+    emoji.style.left = centerX + "px";
+    emoji.style.top = centerY + "px";
+    emoji.style.fontSize = "20px";
+    emoji.style.pointerEvents = "none";
+    emoji.style.zIndex = "9999";
+    emoji.style.userSelect = "none";
+
+    document.body.appendChild(emoji);
+
+    const angle = (i / 10) * 2 * Math.PI;
+    const distance = 80 + Math.random() * 40;
+    const endX = centerX + Math.cos(angle) * distance;
+    const endY = centerY + Math.sin(angle) * distance;
+
+    emoji.animate(
+      [
+        {
+          transform: "translate(0, 0) scale(0) rotate(0deg)",
+          opacity: 1,
+        },
+        {
+          transform: `translate(${endX - centerX}px, ${
+            endY - centerY
+          }px) scale(1.2) rotate(180deg)`,
+          opacity: 0,
+        },
+      ],
+      {
+        duration: 1200,
+        easing: "ease-out",
+      }
+    ).onfinish = () => {
+      emoji.remove();
+    };
+  }
+}
+
+// Special FTU effect
+function createFTUEffect(icon) {
+  const rect = icon.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const ftuEmojis = ["🏛️", "📖", "🎭", "🎨", "🌍", "🗣️", "📝", "🎪"];
+
+  for (let i = 0; i < 10; i++) {
+    const emoji = document.createElement("div");
+    emoji.textContent = ftuEmojis[Math.floor(Math.random() * ftuEmojis.length)];
+    emoji.style.position = "fixed";
+    emoji.style.left = centerX + "px";
+    emoji.style.top = centerY + "px";
+    emoji.style.fontSize = "20px";
+    emoji.style.pointerEvents = "none";
+    emoji.style.zIndex = "9999";
+    emoji.style.userSelect = "none";
+
+    document.body.appendChild(emoji);
+
+    const angle = (i / 10) * 2 * Math.PI;
+    const distance = 80 + Math.random() * 40;
+    const endX = centerX + Math.cos(angle) * distance;
+    const endY = centerY + Math.sin(angle) * distance;
+
+    emoji.animate(
+      [
+        {
+          transform: "translate(0, 0) scale(0) rotate(0deg)",
+          opacity: 1,
+        },
+        {
+          transform: `translate(${endX - centerX}px, ${
+            endY - centerY
+          }px) scale(1.2) rotate(-180deg)`,
+          opacity: 0,
+        },
+      ],
+      {
+        duration: 1200,
+        easing: "ease-out",
+      }
+    ).onfinish = () => {
+      emoji.remove();
+    };
+  }
 }
 
 // Create meow effect

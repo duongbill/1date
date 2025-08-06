@@ -369,6 +369,10 @@ body {
 .letter-content {
     position: relative;
     z-index: 2;
+    text-align: left;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 30px;
 }
 
 .subtitle {
@@ -425,6 +429,8 @@ body {
     line-height: 1.8;
     position: relative;
     animation: fadeInUp 1s ease-out 1s both;
+    text-indent: 0;
+    padding: 0;
 }
 
 /* Tạo khoảng cách cho các thẻ p trong content-text */
@@ -487,27 +493,112 @@ body {
 }
 
 .cat1 {
-    top: 10%;
+    top: 20%;
     left: 5%;
     animation-delay: 0s;
 }
 
 .cat2 {
-    top: 20%;
-    right: 8%;
+    top: 60%;
+    left: 20%;
     animation-delay: 0.5s;
 }
 
 .cat3 {
-    bottom: 25%;
-    left: 3%;
+    top: 15%;
+    left: 35%;
     animation-delay: 1s;
 }
 
 .cat4 {
-    bottom: 15%;
-    right: 6%;
+    top: 70%;
+    left: 50%;
     animation-delay: 1.5s;
+}
+/* New cats with staggered animations */
+.cat5 {
+    bottom: 35%;
+    right: 6%;
+    animation-delay: 2s;
+    animation-duration: 4s;
+}
+
+.cat6 {
+    top: 35%;
+    left: 6%;
+    animation-delay: 2.5s;
+    animation-duration: 3.5s;
+}
+
+.cat7 {
+    bottom: 45%;
+    right: 6%;
+    animation-delay: 3s;
+    animation-duration: 4.5s;
+}
+
+/* DAV and FTU icons */
+.dav-icon {
+    top: 80%;
+    left: 15%;
+    animation-delay: 3.5s;
+    animation-duration: 3s;
+}
+
+.ftu-icon {
+    top: 80%;
+    right: 15%;
+    animation-delay: 4s;
+    animation-duration: 3.5s;
+}
+
+/* Special effects for DAV and FTU icons */
+.dav-icon:hover, .ftu-icon:hover {
+    transform: scale(1.4) rotate(20deg);
+    filter: drop-shadow(0 0 30px rgba(0, 123, 255, 0.8));
+}
+
+.dav-icon .cat-image, .ftu-icon .cat-image {
+    border: 3px solid rgba(0, 123, 255, 0.5);
+    box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+    animation: schoolPulse 2.5s ease-in-out infinite;
+}
+
+/* School pulse animation */
+@keyframes schoolPulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 123, 255, 0.4);
+        border-color: rgba(0, 123, 255, 0.5);
+    }
+    50% {
+        box-shadow: 0 0 30px rgba(0, 123, 255, 0.8);
+        border-color: rgba(0, 123, 255, 0.8);
+    }
+}
+
+/* Special effects for new cats */
+.cat5:hover, .cat6:hover, .cat7:hover {
+    transform: scale(1.3) rotate(15deg);
+    filter: drop-shadow(0 0 25px rgba(255, 105, 180, 0.9));
+}
+
+.cat5 .cat-image, .cat6 .cat-image, .cat7 .cat-image {
+    border: 3px solid rgba(255, 105, 180, 0.5);
+    box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+}
+
+/* Pulse animation for new cats */
+@keyframes newCatPulse {
+    0%, 100% {
+        box-shadow: 0 0 15px rgba(255, 105, 180, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 105, 180, 0.7);
+    }
+}
+
+.cat5 .cat-image, .cat6 .cat-image, .cat7 .cat-image {
+    animation: newCatPulse 2s ease-in-out infinite;
 }
 
 @keyframes catFloat {
@@ -787,13 +878,14 @@ body {
 .content-text {
    font-family: 'Poppins', sans-serif;
     font-size: 0.9rem !important;
-    line-height: 1.6 !important;
+    line-height: 1.8 !important;
     color: #333333;
     position: relative;
-    text-align: left !important;
-    padding: 0 5px !important;
-    margin: 0 !important;
+    text-align: justify !important;
+    padding: 0 !important;
+    margin: 0 0 15px 0 !important;
     font-weight: normal;
+    text-indent: 0 !important;
 }
 
 /* Paper aging effect */
@@ -828,14 +920,10 @@ body {
     opacity: 0.3;
 }
 
-/* Margin decorations */
-.letter-content {
-    position: relative;
-    padding: 40px 20px;
-}
+/* Margin decorations - merged with main letter-content */
 
 .letter-content::before {
-    content: '❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀';
+    content: '❀ ❀ ❀ ❀ ❀ ❀ ';
     position: absolute;
     top: 20px;
     left: 50%;
@@ -846,7 +934,7 @@ body {
 }
 
 .letter-content::after {
-    content: '❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀';
+    content: '❀ ❀ ❀ ❀ ❀ ❀';
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -1133,7 +1221,8 @@ body {
     }
 
     .letter-content {
-        padding: 30px 15px;
+        padding: 30px 20px;
+        text-align: left;
     }
 
     .title {
@@ -1204,14 +1293,10 @@ body {
     opacity: 0.3;
 }
 
-/* Margin decorations */
-.letter-content {
-    position: relative;
-    padding: 40px 20px;
-}
+
 
 .letter-content::before {
-    content: '❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀';
+    content: '❀ ❀ ❀ ❀ ❀ ❀';
     position: absolute;
     top: 20px;
     left: 50%;
@@ -1222,7 +1307,7 @@ body {
 }
 
 .letter-content::after {
-    content: '❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀ ❀';
+    content: '❀ ❀ ❀ ❀ ❀ ❀';
     position: absolute;
     bottom: 20px;
     left: 50%;
